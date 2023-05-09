@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-playground/pkg/server"
+	"go-bookfinder-app/pkg/server"
 )
 
 func main() {

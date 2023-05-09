@@ -1,26 +1,32 @@
 package db
 
 import (
-	"go-playground/pkg/models"
+	"fmt"
+	"go-bookfinder-app/pkg/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
+var (
+	Conn *gorm.DB
+)
 
 func Init() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	Conn, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		panic("Error: Failed to connect database")
 	}
-
-	db.AutoMigrate(&models.Book{})
+	Conn.AutoMigrate(&models.Book{})
 
 	// Create
-	db.Create(&models.Book{Title: "Harry Porter 1", Description: "This is Desc for Harry Porter 1"})
-	db.Create(&models.Book{Title: "Harry Porter 2", Description: "This is Desc for Harry Porter 2"})
-	return db
+	Conn.Create(&models.Book{Title: "golang", Description: "This is Desc for go lang book"})
+	Conn.Create(&models.Book{Title: "Harry Porter 1", Description: "This is Desc for Harry Porter 1"})
+	Conn.Create(&models.Book{Title: "Harry Porter 2", Description: "This is Desc for Harry Porter 2"})
+	// db.Find(&book).Debug()
+	// fmt.Println("DB book:", book)
+	return Conn
 }
-func GetDB() *gorm.DB {
-	return db
+
+func PrintDBConn()  {
+	fmt.Println("DB conn: ", Conn)
 }

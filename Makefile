@@ -5,9 +5,13 @@ default: all
 
 all: clean lint test build run
 
+dep:
+	go mod download
+	go mod tidy
+
 .PHONY: $(BUILD_DIR)/server
 bin/server: cmd/server/*.go
-	CGO_ENABLED=0 go build -mod vendor -ldflags="-s -w" -o ./bin/server ./cmd/server/
+	CGO_ENABLED=1 go build -ldflags="-s -w" -o ./bin/server ./cmd/server/
 
 .PHONY: build
 build: bin/server
@@ -20,9 +24,6 @@ run: build
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(TOOLS_DIR)
-	@go mod vendor
-	@go mod tidy
-
 
 tools/golangci-lint/golangci-lint:
 	mkdir -p tools/
@@ -34,4 +35,4 @@ lint: $(TOOLS_DIR)/golangci-lint/golangci-lint
 
 .PHONY: test
 test:
-	go test -mod vendor -race -cover -coverprofile=coverage.txt -covermode=atomic ./...
+	go test -race -cover -coverprofile=coverage.txt -covermode=atomic ./...

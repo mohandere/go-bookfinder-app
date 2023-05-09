@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-playground/pkg/controllers"
+	"go-bookfinder-app/pkg/controllers"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ func NewRouter() *gin.Engine {
 		bookGroup := v1.Group("book")
 		{
 			book := new(controllers.BookController)
-			bookGroup.GET("/:id", book.Retrieve)
+			bookGroup.GET("/:title", book.Retrieve)
 		}
 	}
 
@@ -27,7 +27,7 @@ func NewRouter() *gin.Engine {
 			"message": "pong",
 		})
 	})
-	router.GET("/index", func(c *gin.Context) {
+	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"title": "Hello world!",
 		})
